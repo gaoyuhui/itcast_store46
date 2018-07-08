@@ -1,7 +1,7 @@
 <template>
     <div class="login-wrap">
         <el-form
-        class="login-from"
+        class="login-form"
         label-position="top"
         label-width="80px"
         :model="formData">
@@ -12,7 +12,7 @@
             <el-form-item label="密码">
               <el-input type="password" v-model="formData.password"></el-input>
             </el-form-item>
-            <el-button class="login-btn" type="primary">主要按钮</el-button>
+            <el-button @click="handleLogin" class="login-btn" type="primary">登录</el-button>
         </el-form>
     </div>
 </template>
@@ -24,6 +24,21 @@ export default {
       formData: {
         username: '',
         password: ''
+      }
+    }
+  },
+  methods: {
+    async handleLogin () {
+      const res = await this.$http.post('login', this.formData)
+      const data = res.data
+      const {meta: {status, msg}} = data
+      if (status === 200) {
+        const token = data.data.token
+        sessionStorage.setItem('token', token)
+        this.$message.success(msg)
+        this.$router.push('/')
+      } else {
+        this.$message.error(msg)
       }
     }
   }
@@ -39,14 +54,14 @@ export default {
   align-items: center;
 }
 
-.login-wrap .login-from {
+.login-wrap .login-form {
   background-color: #fff;
   width: 400px;
   padding: 30px;
   border-radius: 5px;
 }
 
-.login-wrap .login-from .login-btn {
+.login-wrap .login-form .login-btn {
   width: 100%;
 }
 </style>

@@ -7,8 +7,14 @@ import App from './App'
 import router from './router'
 import '@/assets/css/index.css'
 import MyAxios from '@/plugins/MyAxios'
+import moment from 'moment'
 
 Vue.config.productionTip = false
+
+Vue.filter('fmtData', (value, fmtString) => {
+  return moment(value).format(fmtString)
+})
+
 Vue.use(MyAxios)
 Vue.use(ElementUI)
 
