@@ -9,8 +9,6 @@ import Rights from '@/views/roies/Rights.vue'
 
 Vue.use(Router)
 
-// const token = sessionStorage.getItem('token')
-// this.$http.defaults.headers.common['Authorization'] = token
 export default new Router({
   routes: [
     {

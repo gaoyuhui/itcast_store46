@@ -44,19 +44,17 @@ export default {
     }
   },
   created() {
-    const token = sessionStorage.getItem('token')
-    this.$http.defaults.headers.common['Authorization'] = token
     this.loadData()
   },
   methods: {
     async fn (row) {
-      this.option = true
       this.userId = row.id
       this.username = row.username
       const res = await this.$http.get('roles');
       this.roles = res.data.data
       const res1 = await this.$http.get('users/' + row.id)
       this.currentRoleId = res1.data.data.rid
+      this.option = true
     },
     async optionCompile () {
       const res = await this.$http.put(`users/${this.userId}/role`, {
@@ -119,6 +117,12 @@ export default {
             message: '已取消删除'
           })
         })
+    },
+    dialogFormVisibleAdd () {
+      this.dialogFormVisible = true
+      for (let key in this.form) {
+        this.form[key] = ''
+      }
     },
     async handleAdd() {
       this.$refs.myform.validate(async (valid) => {

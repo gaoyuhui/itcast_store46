@@ -45,8 +45,6 @@ export default {
     }
   },
   created () {
-    const token = sessionStorage.getItem('token')
-    this.$http.defaults.headers.common['Authorization'] = token
     this.loadData()
   },
   methods: {
