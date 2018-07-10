@@ -37,7 +37,10 @@ export default {
       currentPage2: 1,
       pagesize: 5,
       option: false,
-      username: ''
+      username: '',
+      roles: '',
+      currentRoleId: -1,
+      userId: -1
     }
   },
   created() {
@@ -46,11 +49,28 @@ export default {
     this.loadData()
   },
   methods: {
-    //   搜索
     async fn (row) {
       this.option = true
-      const res = await this.$http.get('users/' + row.id)
-      this.username = res.data.data.username
+      this.userId = row.id
+      this.username = row.username
+      const res = await this.$http.get('roles');
+      this.roles = res.data.data
+      const res1 = await this.$http.get('users/' + row.id)
+      this.currentRoleId = res1.data.data.rid
+    },
+    async optionCompile () {
+      const res = await this.$http.put(`users/${this.userId}/role`, {
+        rid: this.currentRoleId
+      })
+      const data = res.data
+      if (data.meta.status === 200) {
+        this.option = false
+        this.$message.success(data.meta.msg)
+        this.roles = ''
+        this.currentRoleId = -1
+      } else {
+        this.$message.error(data.meta.msg)
+      }
     },
     async loadData() {
       this.loading = true
@@ -109,9 +129,6 @@ export default {
           if (status === 201) {
             this.$message.success(msg)
             this.dialogFormVisible = false
-            for (let key in this.form) {
-              this.form[key] = ''
-            }
             this.loadData()
           } else {
             this.$message.error(msg)
@@ -123,7 +140,10 @@ export default {
     },
     async AddCopmile (row) {
       this.compile = true
-      this.formData = row
+      this.formData.mobile = row.mobile
+      this.formData.username = row.username
+      this.formData.id = row.id
+      this.formData.email = row.email
     },
     async handleCompile () {
       const res = await this.$http.put('users/' + this.formData.id, this.formData)
