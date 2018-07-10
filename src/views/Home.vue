@@ -6,7 +6,7 @@
           <el-col :span="16"><h2 class="middle">电商后台管理</h2></el-col>
           <el-col :span="4"><a class="logout" href="#" @click.prevent="handleLogout">退出</a></el-col>
         </el-row>
-    </el-header>
+      </el-header>
 
       <el-container class="container">
         <el-aside class="aside" width="200px">
@@ -111,7 +111,7 @@ export default {
   beforeCreate() {
     const token = sessionStorage.getItem('token')
     if (!token) {
-      this.$routet.push({name: 'login'})
+      this.$router.push({name: 'login'})
       this.$message.warning('请登录')
     }
   },

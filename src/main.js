@@ -9,7 +9,7 @@ import '@/assets/css/index.css'
 import MyAxios from '@/plugins/MyAxios'
 import moment from 'moment'
 
-Vue.config.productionTip = false
+// Vue.config.productionTip = false
 
 Vue.filter('fmtData', (value, fmtString) => {
   return moment(value).format(fmtString)
