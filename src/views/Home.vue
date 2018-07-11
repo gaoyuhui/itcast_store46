@@ -14,63 +14,24 @@
             :router="true"
             :unique-opened="true"
             class="menu">
-              <el-submenu index="1">
+              <el-submenu
+                v-for="item in menus"
+                :key="item.id"
+                :index="item.id + ''">
                   <template slot="title">
                   <i class="el-icon-location"></i>
-                  <span>用户管理</span>
+                  <span>{{ item.authName }}</span>
                   </template>
-                  <el-menu-item index="/users">
+                  <el-menu-item
+                    v-for="item1 in item.children"
+                    :key="item1.id"
+                    :index="'/' + item1.path">
                     <template slot="title">
                       <i class="el-icon-menu"></i>
-                      用户管理
+                      <span>{{ item1.authName }}</span>
                     </template>
                   </el-menu-item>
               </el-submenu>
-
-              <el-submenu index="2">
-                  <template slot="title">
-                  <i class="el-icon-location"></i>
-                  <span>权限管理</span>
-                  </template>
-                  <el-menu-item index="/roles">
-                    <template slot="title">
-                      <i class="el-icon-menu"></i>
-                      角色列表
-                    </template>
-                  </el-menu-item>
-                  <el-menu-item index="/rights">
-                    <template slot="title">
-                      <i class="el-icon-menu"></i>
-                      权限列表
-                    </template>
-                  </el-menu-item>
-              </el-submenu>
-
-              <el-submenu index="3">
-                  <template slot="title">
-                  <i class="el-icon-location"></i>
-                  <span>商品管理</span>
-                  </template>
-                  <el-menu-item index="3-1">
-                    <template slot="title">
-                      <i class="el-icon-menu"></i>
-                      商品列表
-                    </template>
-                  </el-menu-item>
-                  <el-menu-item index="3-2">
-                    <template slot="title">
-                      <i class="el-icon-menu"></i>
-                      分类参数
-                    </template>
-                  </el-menu-item>
-                  <el-menu-item index="3-3">
-                    <template slot="title">
-                      <i class="el-icon-menu"></i>
-                      商品分类
-                    </template>
-                  </el-menu-item>
-              </el-submenu>
-
               <el-submenu index="4">
                   <template slot="title">
                   <i class="el-icon-location"></i>
@@ -83,20 +44,6 @@
                     </template>
                   </el-menu-item>
               </el-submenu>
-
-              <el-submenu index="5">
-                  <template slot="title">
-                  <i class="el-icon-location"></i>
-                  <span>数据统计</span>
-                  </template>
-                  <el-menu-item index="5-1">
-                    <template slot="title">
-                      <i class="el-icon-menu"></i>
-                      数据报表
-                    </template>
-                  </el-menu-item>
-              </el-submenu>
-
             </el-menu>
         </el-aside>
         <el-main class="main">
@@ -108,18 +55,31 @@
 
 <script>
 export default {
-  beforeCreate() {
-    const token = sessionStorage.getItem('token')
-    if (!token) {
-      this.$router.push({name: 'login'})
-      this.$message.warning('请登录')
+  data () {
+    return {
+      menus: {}
     }
+  },
+  // beforeCreate() {
+  //   const token = sessionStorage.getItem('token')
+  //   if (!token) {
+  //     this.$router.push({name: 'login'})
+  //     this.$message.warning('请登录')
+  //   }
+  // },
+  created () {
+    this.loadData()
   },
   methods: {
     handleLogout () {
       sessionStorage.clear()
       this.$router.push('/login')
       this.$message.success('退出成功')
+    },
+    async loadData () {
+      const {data: resData} = await this.$http.get('menus')
+      this.menus = resData.data
+      console.log(this.menus)
     }
   }
 }

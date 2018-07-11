@@ -5,11 +5,14 @@ import Login from '@/views/Login'
 import Home from '@/views/Home'
 
 import Users from '@/views/users/users.vue'
-import Rights from '@/views/roies/Rights.vue'
+import Rights from '@/views/roles/Rights.vue'
+import Roles from '@/views/roles/Roles.vue'
 
+import Category from '@/views/goods/Category.vue'
+import {Message} from 'element-ui'
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       name: 'login',
@@ -28,11 +31,36 @@ export default new Router({
           component: Users
         },
         {
+          name: 'roles',
+          path: '/roles',
+          component: Roles
+        },
+        {
           name: 'rights',
           path: '/rights',
           component: Rights
+        },
+        {
+          neme: 'category',
+          path: '/categories',
+          component: Category
         }
       ]
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  if (to.name === 'login') {
+    next()
+  } else {
+    const token = sessionStorage.getItem('token')
+    if (!token) {
+      router.push({name: 'login'})
+      Message.warning('请登录')
+      return
+    }
+    next()
+  }
+})
+
+export default router

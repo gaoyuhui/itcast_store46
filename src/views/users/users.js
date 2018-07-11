@@ -37,9 +37,9 @@ export default {
       currentPage2: 1,
       pagesize: 5,
       option: false,
-      username: '',
       roles: '',
       currentRoleId: -1,
+      username: '',
       userId: -1
     }
   },
@@ -48,9 +48,9 @@ export default {
   },
   methods: {
     async fn (row) {
-      this.userId = row.id
       this.username = row.username
-      const res = await this.$http.get('roles');
+      this.userId = row.id
+      const res = await this.$http.get('roles')
       this.roles = res.data.data
       const res1 = await this.$http.get('users/' + row.id)
       this.currentRoleId = res1.data.data.rid
@@ -64,12 +64,33 @@ export default {
       if (data.meta.status === 200) {
         this.option = false
         this.$message.success(data.meta.msg)
-        this.roles = ''
-        this.currentRoleId = -1
       } else {
         this.$message.error(data.meta.msg)
       }
     },
+    // async fn (row) {
+    //   this.userId = row.id
+    //   this.username = row.username
+    //   const res = await this.$http.get('roles')
+    //   this.roles = res.data.data
+    //   const res1 = await this.$http.get('users/' + row.id)
+    //   this.currentRoleId = res1.data.data.rid
+    //   this.option = true
+    // },
+    // async optionCompile () {
+    //   const res = await this.$http.put(`users/${this.userId}/role`, {
+    //     rid: this.currentRoleId
+    //   })
+    //   const data = res.data
+    //   if (data.meta.status === 200) {
+    //     this.option = false
+    //     this.$message.success(data.meta.msg)
+    //     this.roles = ''
+    //     this.currentRoleId = -1
+    //   } else {
+    //     this.$message.error(data.meta.msg)
+    //   }
+    // },
     async loadData() {
       this.loading = true
       const res = await this.$http.get('users?pagenum=' + this.currentPage2 + '&pagesize=' + this.pagesize + '&query=' + this.value)

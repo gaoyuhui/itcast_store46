@@ -9,7 +9,11 @@ import '@/assets/css/index.css'
 import MyAxios from '@/plugins/MyAxios'
 import moment from 'moment'
 
+import MyBreadcrumb from '@/components/MyBreadcrumb.vue'
+
 // Vue.config.productionTip = false
+
+Vue.component(MyBreadcrumb.name, MyBreadcrumb)
 
 Vue.filter('fmtData', (value, fmtString) => {
   return moment(value).format(fmtString)
