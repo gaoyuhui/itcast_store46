@@ -4,6 +4,7 @@ MyAxios.install = function(Vue) {
   const instance = axios.create({
     baseURL: 'http://localhost:8888/api/private/v1/'
   })
+  // 路由守卫
   instance.interceptors.request.use(function (config) {
     if (config.url.toLowerCase() !== 'login') {
       const token = sessionStorage.getItem('token')

@@ -79,7 +79,6 @@ export default {
     async loadData () {
       const {data: resData} = await this.$http.get('menus')
       this.menus = resData.data
-      console.log(this.menus)
     }
   }
 }

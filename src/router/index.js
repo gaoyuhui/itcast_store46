@@ -9,6 +9,8 @@ import Rights from '@/views/roles/Rights.vue'
 import Roles from '@/views/roles/Roles.vue'
 
 import Category from '@/views/goods/Category.vue'
+import GoodsList from '@/views/goods/List.vue'
+import GoodsAdd from '@/views/goods/Add.vue'
 import {Message} from 'element-ui'
 Vue.use(Router)
 
@@ -41,9 +43,19 @@ const router = new Router({
           component: Rights
         },
         {
-          neme: 'category',
+          name: 'category',
           path: '/categories',
           component: Category
+        },
+        {
+          name: 'goods-list',
+          path: '/goods',
+          component: GoodsList
+        },
+        {
+          name: 'goods-add',
+          path: 'goods/add',
+          component: GoodsAdd
         }
       ]
     }
