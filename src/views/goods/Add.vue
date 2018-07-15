@@ -34,6 +34,17 @@
             </el-form>
           </el-tab-pane>
           <el-tab-pane label="商品图片" name="1">
+            <el-upload
+              action="http://localhost:8888/api/private/v1/upload"
+              :headers="headers"
+              :on-success="handleUploadSuccess"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :file-list="fileList2"
+              list-type="picture">
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+            </el-upload>
             <el-row>
                 <el-col :span="4">
                   <el-button @click="handle">下一步</el-button>
@@ -70,6 +81,10 @@ import { quillEditor } from 'vue-quill-editor'
 export default {
   data () {
     return {
+      fileList2: [],
+      headers: {
+        Authorization: window.sessionStorage.getItem('token')
+      },
       activeName: '0',
       stepActive: 0,
       form: {
@@ -78,11 +93,28 @@ export default {
         goods_weight: '',
         goods_number: '',
         goods_cat: '',
-        cat_introduce: ''
+        cat_introduce: '',
+        pics: []
       }
     }
   },
   methods: {
+    handleUploadSuccess (response, file, fileList) {
+      this.form.pics.push({
+        pic: response.data.tmp_path
+      })
+    },
+    handleRemove(file, fileList) {
+      const index = this.form.pics.findIndex(function (item) {
+        return item.pic === file.response.data.tmp_path
+      })
+      if (index !== -1) {
+        this.form.pics.splice(index, 1)
+      }
+    },
+    handlePreview(file) {
+      console.log(file)
+    },
     onEditorBlur () {
       console.log('onEditorBlur')
     },
